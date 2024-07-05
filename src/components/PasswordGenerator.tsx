@@ -1,7 +1,7 @@
 import React from "react";
 
 const PasswordGenerator = () => {
-  return <div>PasswordGenerator</div>;
+  return <div></div>;
 };
 
 export default PasswordGenerator;
