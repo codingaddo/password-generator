@@ -1,5 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./assets/fonts/static/JetBrainsMono-Bold.ttf') format('truetype');
+  font-weight: bold;
+}
   :root{
     --color-red:#F64A4A;
     --color-orange:#FB7C58;
@@ -21,18 +26,29 @@ const GlobalStyles = createGlobalStyle`
 
 body{
   background-color:var(--color-very-dark-grey);
+  font-family: 'JetBrains Mono', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 input{
   font: inherit;
 }
 
+
+
 button{
   cursor: pointer;
 }
-
-h1,h2,h3,h4,h5,h6{
+*:disabled{
+  cursor: not-allowed;
+}
+h1{
   color: var(--color-grey);
+  font-size: 24px;
+  line-height: 31px;
 }
 
 `;
