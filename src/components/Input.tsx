@@ -6,8 +6,8 @@ const type = {
     background-color: inherit;
     border: none;
     color: var(--color-almost-white);
-    font-size: 28px;
-    line-height: 43px;
+    font-size: 25px;
+    line-height: 41px;
     ::placeholder {
       color: var(--color-grey);
     }
@@ -51,7 +51,7 @@ const type = {
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
-    height: 8px;
+    height: 7px;
     width: 100%;
     background-color: var(--color-very-dark-grey);
     -webkit-transition: 500ms;
@@ -94,7 +94,6 @@ const type = {
 
 interface InputProps {
   inputType: keyof typeof type;
-  value?: number;
 }
 
 const Input = styled.input<InputProps>`
