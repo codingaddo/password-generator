@@ -26,7 +26,7 @@ const type = {
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
-    height: 7px;
+    height: 5px;
     width: 100%;
     background-color: var(--color-very-dark-grey);
     -webkit-transition: 500ms;
