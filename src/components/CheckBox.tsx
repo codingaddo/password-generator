@@ -39,9 +39,10 @@ const StyledCheckbox = styled.div`
     &:hover {
       opacity: 0.8;
     }
-  }
-  @media (max-width: 480px) {
-    font-size: 15px;
+    @media (max-width: 480px) {
+      font-size: 15px;
+      line-height: 20px;
+    }
   }
 
   svg {
