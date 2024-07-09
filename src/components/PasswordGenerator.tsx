@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import PasswordBox from "./PasswordBox";
 import Input from "./Input";
 import CopyButton from "./CopyButton";
@@ -8,8 +8,12 @@ import GenerateButton from "./GenerateBtn";
 import PasswordStrengthIndicator from "./StrengthIndicator";
 import { calStrength } from "./CalStrength";
 import toast, { Toaster } from "react-hot-toast";
+import { initailState, reducerFn } from "./hooks/useReducerHook";
+import { fallbackCopyTextToClipboard } from "./fallBackCopy";
+import Checkbox from "./CheckBox";
 
 const Main = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,21 +34,7 @@ const Settings = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-`;
-
-const Label = styled.p`
-  font-size: 17px;
-  line-height: 23px;
-  color: var(--color-almost-white);
-  text-transform: capitalize;
-`;
-
-const CheckboxContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  gap: 17px;
 `;
 
 const StrengthContainer = styled.div`
@@ -55,26 +45,38 @@ const StrengthContainer = styled.div`
   width: 100%;
   padding: 22px;
   height: 22px;
+
+  @media (max-width: 480px) {
+    padding: 22px;
+  }
 `;
 
 const StrengthText = styled.p`
   font-size: 15px;
   line-height: 23px;
-  color: var(--color-almost-white);
+  color: var(--color-grey);
   text-transform: uppercase;
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const PasswordGenerator = () => {
-  const [range, setRange] = useState<number>(10);
-  const [upperCase, setUpperCase] = useState<boolean>(true);
-  const [lowerCase, setLowerCase] = useState<boolean>(true);
-  const [numbers, setNumbers] = useState<boolean>(true);
-  const [symbols, setSymbols] = useState<boolean>(true);
-  const [password, setPassword] = useState<string>("");
+  const [state, dispatch] = useReducer(reducerFn, initailState);
+  const {
+    upperCase,
+    lowerCase,
+    symbols,
+    numbers,
+    length: range,
+    password,
+    copied,
+  } = state;
 
   const generatePassword = () => {
-    if (range < 4) {
-      toast.error("Password must be at least 4 characters long", {
+    if (range < 8) {
+      toast.error("Min of 8 characters needed", {
         style: {
           background: "#24232C",
           color: "#E6E5EA",
@@ -93,7 +95,7 @@ const PasswordGenerator = () => {
       if (numbers) charSet += numberChars;
       if (symbols) charSet += symbolChars;
       if (charSet === "") {
-        toast.error("Password must include characters", {
+        toast.error("Password must include letters, numbers or symbols", {
           style: {
             background: "#24232C",
             color: "#E6E5EA",
@@ -103,23 +105,34 @@ const PasswordGenerator = () => {
         for (let i = 0; i < range; i++) {
           randomIndex = Math.floor(Math.random() * charSet.length);
           generatedPassword += charSet[randomIndex];
-          setPassword(generatedPassword);
+          dispatch({ type: "SET_PASSWORD", payload: generatedPassword });
         }
+        toast.success("Password Generated Successfully", {
+          style: {
+            background: "#24232C",
+            color: "#E6E5EA",
+            paddingRight: "20px",
+            paddingLeft: "50px",
+          },
+        });
       }
     }
   };
 
-  const handleCopy = () => {
-    if (!password) return;
-    navigator.clipboard.writeText(password);
-    toast.success("Password copied to clipboard", {
-      style: {
-        background: "#24232C",
-        color: "#E6E5EA",
-        padding: "20px",
-      },
-    });
-    setPassword("");
+  const handleCopy = async () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(password);
+      dispatch({ type: "SET_COPIED", payload: true });
+      setTimeout(() => {
+        dispatch({ type: "RESET" });
+      }, 2000);
+    } else {
+      fallbackCopyTextToClipboard(password);
+      dispatch({ type: "SET_COPIED", payload: true });
+      setTimeout(() => {
+        dispatch({ type: "RESET" });
+      }, 2000);
+    }
   };
 
   return (
@@ -132,7 +145,11 @@ const PasswordGenerator = () => {
           placeholder="P4$5W0rD!"
           inputType="Text"
         />
-        <CopyButton handleClick={() => handleCopy()} />
+        <CopyButton
+          handleClick={() => handleCopy()}
+          disabled={!password}
+          copied={copied}
+        />
       </PasswordBox>
       <Container>
         <CharacterLength num={range} />
@@ -143,7 +160,7 @@ const PasswordGenerator = () => {
           max={20}
           value={range}
           onChange={(e) => {
-            setRange(Number(e.target.value));
+            dispatch({ type: "SET_LENGTH", payload: Number(e.target.value) });
           }}
           style={
             {
@@ -152,42 +169,26 @@ const PasswordGenerator = () => {
           }
         />
         <Settings>
-          <CheckboxContainer>
-            <Input
-              inputType="Check"
-              type="checkbox"
-              checked={upperCase}
-              onChange={(e) => setUpperCase(e.target.checked)}
-            />
-            <Label>include upercase letters</Label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <Input
-              inputType="Check"
-              type="checkbox"
-              checked={lowerCase}
-              onChange={(e) => setLowerCase(e.target.checked)}
-            />
-            <Label>include lowercase letters</Label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <Input
-              inputType="Check"
-              type="checkbox"
-              checked={numbers}
-              onChange={(e) => setNumbers(e.target.checked)}
-            />
-            <Label>include numbers</Label>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <Input
-              inputType="Check"
-              type="checkbox"
-              checked={symbols}
-              onChange={(e) => setSymbols(e.target.checked)}
-            />
-            <Label>include symbols</Label>
-          </CheckboxContainer>
+          <Checkbox
+            label="include uppercase letters"
+            checked={upperCase}
+            onChange={() => dispatch({ type: "TOGGLE_UPPERCASE" })}
+          />
+          <Checkbox
+            label="include lowercase letters"
+            checked={lowerCase}
+            onChange={() => dispatch({ type: "TOGGLE_LOWERCASE" })}
+          />
+          <Checkbox
+            label="include Numbers"
+            checked={numbers}
+            onChange={() => dispatch({ type: "TOGGLE_NUMBERS" })}
+          />
+          <Checkbox
+            label="include symbols"
+            checked={symbols}
+            onChange={() => dispatch({ type: "TOGGLE_SYMBOLS" })}
+          />
         </Settings>
         <StrengthContainer>
           <StrengthText>Strength</StrengthText>

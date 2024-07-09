@@ -1,23 +1,19 @@
-import React from "react";
+import AppMain from "../src/components/App";
 import "./App.css";
 import GlobalStyles from "./styles/GlobalStyles";
 import Title from "./components/Title";
 import AppLayout from "./components/AppLayout";
-import PasswordContainer from "./components/PasswordContainer";
-
 import PasswordGenerator from "./components/PasswordGenerator";
 
 function App() {
   return (
-    <div className="app">
+    <AppMain>
       <GlobalStyles />
+      <Title>Password Generator</Title>
       <AppLayout>
-        <Title>Password Generator</Title>
-        <PasswordContainer>
-          <PasswordGenerator />
-        </PasswordContainer>
+        <PasswordGenerator />
       </AppLayout>
-    </div>
+    </AppMain>
   );
 }
 

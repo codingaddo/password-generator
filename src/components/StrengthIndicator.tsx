@@ -16,6 +16,11 @@ const IndicatorLabel = styled.p`
   line-height: 28px;
   color: var(--color-almost-white);
   text-transform: uppercase;
+
+  @media (max-width: 480px) {
+    font-size: 15px;
+    line-height: 20px;
+  }
 `;
 
 const IndicatorBarsWrapper = styled.div`

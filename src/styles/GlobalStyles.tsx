@@ -33,10 +33,10 @@ body{
   justify-content: center;
 }
 
+
 input{
   font: inherit;
 }
-
 
 
 button{
@@ -44,7 +44,7 @@ button{
 }
 *:disabled{
   cursor: not-allowed;
-  opacity: 0.3;
+  /* opacity: 0.5; */
 }
 h1{
   color: var(--color-grey);

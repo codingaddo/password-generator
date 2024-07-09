@@ -15,38 +15,13 @@ const type = {
       border: none;
       outline: none;
     }
-  `,
-  Check: css`
-    -webkit-appearance: none;
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    border: 2px solid var(--color-almost-white);
-    background-color: inherit;
-    cursor: pointer;
 
-    &:checked::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 16px;
-      height: 16px;
-      background-image: url('data:image/svg+xml,%3Csvg width="14" height="12" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="%2318171F" stroke-width="3" fill="#FFFFFF" d="M1 5.607L4.393 9l8-8"/%3E%3C/svg%3E');
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-    &:hover {
-      border: 2px solid var(--color-neon-green);
-    }
-    &:checked {
-      background-color: var(--color-neon-green);
-      border: 2px solid var(--color-neon-green);
+    @media (max-width: 480px) {
+      font-size: 20px;
+      line-height: 31px;
     }
   `,
+
   Range: css`
     cursor: pointer;
     -webkit-appearance: none;
@@ -97,7 +72,6 @@ interface InputProps {
 }
 
 const Input = styled.input<InputProps>`
-  /* width: 100%; */
   &:focus {
     border: none;
     outline: none;
