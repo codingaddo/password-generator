@@ -25,7 +25,7 @@ To run this project, you need to have Node.js and npm installed on your machine.
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/password-generator.git
+git clone https://github.com/codingaddo/password-generator
 cd password-generator
 ```
 
