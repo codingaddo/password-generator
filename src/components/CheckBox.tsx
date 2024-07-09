@@ -10,11 +10,18 @@ const StyledCheckbox = styled.div`
     width: 20px;
     border: 2px solid var(--color-almost-white);
     cursor: pointer;
+    &:hover {
+      border-color: var(--color-neon-green);
+    }
   }
 
   & input[type="checkbox"]:checked {
     background-color: var(--color-neon-green);
     border: none;
+    &:hover {
+      border-color: var(--color-neon-green);
+      opacity: 0.8;
+    }
   }
 
   & label {
@@ -27,12 +34,16 @@ const StyledCheckbox = styled.div`
     line-height: 23px;
     color: var(--color-almost-white);
     text-transform: capitalize;
+    transition: all 0.5s;
     cursor: pointer;
-
-    @media (max-width: 480px) {
-      font-size: 15px;
+    &:hover {
+      opacity: 0.8;
     }
   }
+  @media (max-width: 480px) {
+    font-size: 15px;
+  }
+
   svg {
     position: absolute;
     left: 3px;

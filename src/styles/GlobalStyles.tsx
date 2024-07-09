@@ -28,9 +28,10 @@ body{
   background-color:var(--color-very-dark-grey);
   font-family: 'JetBrains Mono', monospace;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
+ 
 }
 
 
@@ -42,14 +43,13 @@ input{
 button{
   cursor: pointer;
 }
+
 *:disabled{
   cursor: not-allowed;
-  /* opacity: 0.5; */
 }
 h1{
   color: var(--color-grey);
   font-size: 24px;
-  line-height: 31px;
 }
 
 `;

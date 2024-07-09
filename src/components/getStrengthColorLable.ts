@@ -28,6 +28,6 @@ export const getStrengthLabel = (strength: number) => {
     case 4:
       return "STRONG";
     default:
-      return "TOO WEAK!";
+      return "";
   }
 };
